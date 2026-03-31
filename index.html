@@ -3,79 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REVIZOR_CYBER_QUIZ</title>
+    <title>РЕВИЗОР_2077 // ALI</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;700&display=swap');
+
         :root {
             --neon-pink: #ff00ff;
             --neon-cyan: #00f2ff;
             --neon-yellow: #fcee0a;
-            --dark-bg: #050505;
-            --card-bg: rgba(20, 20, 25, 0.9);
+            --main-bg: rgba(5, 5, 10, 0.9);
         }
 
         body {
-            background-color: var(--dark-bg);
-            background-image: 
-                linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
-            color: white;
-            font-family: 'Orbitron', 'Segoe UI', sans-serif;
             margin: 0;
+            padding: 0;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 100vh;
+            font-family: 'Roboto', sans-serif;
+            color: white;
+            /* ФОН: Киберпанк город, дождь, 8k */
+            background: url('https://images.unsplash.com/photo-1605142859862-978be7eba909?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
+            background-size: cover;
             overflow-x: hidden;
         }
 
         .quiz-container {
-            background: var(--card-bg);
+            background: var(--main-bg);
+            backdrop-filter: blur(15px);
             width: 90%;
             max-width: 600px;
             padding: 40px;
             border: 2px solid var(--neon-cyan);
-            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2), inset 0 0 10px rgba(0, 242, 255, 0.1);
-            border-radius: 0 40px 0 40px;
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.4);
+            border-radius: 0 50px 0 50px;
             position: relative;
+            border-right: 10px solid var(--neon-pink);
         }
 
-        .quiz-container::after {
-            content: "SYSTEM_ACCESS_GRANTED";
+        .system-tag {
             position: absolute;
-            top: -15px;
-            left: 20px;
+            top: -12px;
+            left: 30px;
             background: var(--neon-cyan);
             color: black;
-            padding: 2px 10px;
-            font-size: 0.7rem;
+            font-family: 'Orbitron', sans-serif;
+            padding: 2px 15px;
+            font-size: 0.75rem;
             font-weight: bold;
+            text-transform: uppercase;
         }
 
         .progress-bar {
             height: 4px;
-            background: #1a1a1a;
-            margin-bottom: 30px;
-            border-radius: 2px;
+            background: rgba(255,255,255,0.05);
+            margin-bottom: 35px;
         }
 
         #progress-fill {
             height: 100%;
             background: var(--neon-pink);
-            box-shadow: 0 0 15px var(--neon-pink);
+            box-shadow: 0 0 20px var(--neon-pink);
             width: 0%;
-            transition: 0.5s;
+            transition: 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
         h2 {
-            font-size: 1.2rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
             color: var(--neon-yellow);
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             margin-bottom: 30px;
-            border-left: 4px solid var(--neon-pink);
-            padding-left: 15px;
+            line-height: 1.5;
+            text-shadow: 0 0 5px rgba(252, 238, 10, 0.5);
         }
 
         .options {
@@ -84,13 +87,13 @@
         }
 
         .opt-btn {
-            background: transparent;
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid var(--neon-cyan);
             color: var(--neon-cyan);
-            padding: 15px;
+            padding: 18px;
             text-align: left;
             cursor: pointer;
-            text-transform: uppercase;
+            font-family: 'Orbitron', sans-serif;
             font-size: 0.9rem;
             transition: 0.3s;
             clip-path: polygon(0% 0%, 95% 0%, 100% 30%, 100% 100%, 5% 100%, 0% 70%);
@@ -99,87 +102,111 @@
         .opt-btn:hover {
             background: var(--neon-cyan);
             color: black;
-            box-shadow: 0 0 20px var(--neon-cyan);
+            box-shadow: 0 0 25px var(--neon-cyan);
+            transform: translateX(10px);
         }
 
-        .grade-num {
+        .grade-display {
+            font-family: 'Orbitron', sans-serif;
             font-size: 6rem;
             color: var(--neon-pink);
-            text-shadow: 0 0 20px var(--neon-pink);
-            margin: 20px 0;
+            text-shadow: 0 0 30px var(--neon-pink);
+            margin: 10px 0;
         }
 
         .footer {
             margin-top: 30px;
-            font-size: 0.8rem;
-            color: #555;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: white;
+            background: rgba(0,0,0,0.7);
+            padding: 12px 30px;
+            border-left: 5px solid var(--neon-cyan);
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
         }
 
-        .footer b {
-            color: var(--neon-yellow);
-            text-shadow: 0 0 5px var(--neon-yellow);
-        }
+        .footer b { color: var(--neon-yellow); }
 
         .hidden { display: none; }
 
-        .review-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 10px;
-            margin-bottom: 10px;
-            border-left: 2px solid var(--neon-pink);
-            font-size: 0.8rem;
+        .review-box {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 25px;
             text-align: left;
+            padding-right: 15px;
+            font-size: 0.85rem;
+        }
+
+        .review-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid var(--neon-pink);
         }
 
         .btn-restart {
-            margin-top: 20px;
+            margin-top: 30px;
             background: var(--neon-yellow);
             color: black;
             border: none;
-            padding: 15px;
+            padding: 18px;
             width: 100%;
+            font-family: 'Orbitron', sans-serif;
             font-weight: bold;
             cursor: pointer;
-            clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+            text-transform: uppercase;
+            transition: 0.2s;
         }
+
+        .btn-restart:hover {
+            background: white;
+            box-shadow: 0 0 20px white;
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-pink); }
     </style>
 </head>
 <body>
 
 <div class="quiz-container">
+    <div class="system-tag">ST_ID: ALI_CORE</div>
+    
     <div id="game">
         <div class="progress-bar"><div id="progress-fill"></div></div>
-        <h2 id="q-text">INITIALIZING...</h2>
+        <h2 id="q-text">SCANNING_DATA...</h2>
         <div class="options" id="opt-container"></div>
     </div>
 
     <div id="results" class="hidden" style="text-align: center;">
-        <h1 style="color:var(--neon-cyan)">LEVEL_COMPLETE</h1>
-        <div class="grade-num" id="grade-num">5</div>
-        <p id="grade-desc" style="color: var(--neon-yellow);"></p>
-        <div id="detailed-review"></div>
-        <button class="btn-restart" onclick="location.reload()">REBOOT_SYSTEM</button>
+        <h1 style="font-family:'Orbitron'; color:var(--neon-cyan); margin:0;">UPLOAD_COMPLETE</h1>
+        <div class="grade-display" id="grade-num">5</div>
+        <p id="grade-desc" style="color: var(--neon-yellow); font-family:'Orbitron';"></p>
+        
+        <div class="review-box" id="detailed-review"></div>
+        
+        <button class="btn-restart" onclick="location.reload()">RE-INITIATE_SESSION</button>
     </div>
 </div>
 
 <div class="footer">
-    USER_ID: <b>АЛИ</b> // STATUS: DEVELOPER
+    ЭТУ РАБОТУ СДЕЛАЛ: <b>АЛИ</b>
 </div>
 
 <script>
     const quizData = [
-        { q: "СУММА ВЗЯТКИ У ПОЧТМЕЙСТЕРА ШПЕКИНА?", a: ["200 CR", "300 CR", "400 CR", "100 CR"], c: 1 },
-        { q: "ID СЛУГИ ХЛЕСТАКОВА?", a: ["ПЕТРУШКА", "СЕЛИФАН", "ОСИП", "ЗАХАР"], c: 2 },
+        { q: "СУММА ВЗЯТКИ У ПОЧТМЕЙСТЕРА ШПЕКИНА?", a: ["200 РУБЛЕЙ", "300 РУБЛЕЙ", "400 РУБЛЕЙ", "100 РУБЛЕЙ"], c: 1 },
+        { q: "ИМЯ СЛУГИ ХЛЕСТАКОВА?", a: ["ПЕТРУШКА", "СЕЛИФАН", "ОСИП", "ЗАХАР"], c: 2 },
         { q: "ДОНОС ЗЕМЛЯНИКИ: КТО ВОЛЬНОДУМЕЦ?", a: ["ГОРОДНИЧИЙ", "ЛЯПКИН-ТЯПКИН", "ХЛОПОВ", "БОБЧИНСКИЙ"], c: 1 },
-        { q: "ПЕРВЫЙ КОНТАКТ: КТО ЗАМЕТИЛ РЕВИЗОРА?", a: ["ОСИП", "ТРАКТИРЩИК", "БОБЧИНСКИЙ/ДОБЧИНСКИЙ", "ШПЕКИН"], c: 2 },
-        { q: "ОБВИНЕНИЕ ПОШЛЕПКИНОЙ:", a: ["КРАЖА ДАННЫХ", "НЕЗАКОННЫЙ ПРИЗЫВ МУЖА", "КОРРУПЦИЯ", "ПОРКА"], c: 1 },
-        { q: "ЦЕНА АРБУЗА В КРЕДИТАХ?", a: ["100", "500", "700", "1000"], c: 2 },
-        { q: "ИМЯ ОБЪЕКТА: ДОЧЬ ГОРОДНИЧЕГО?", a: ["АННА", "МАРЬЯ", "ДАРЬЯ", "АВДОТЬЯ"], c: 1 },
-        { q: "УПУЩЕННЫЙ ПРЕДМЕТ ХЛЕСТАКОВА?", a: ["ПЛАТОК", "КАРТУЗ", "ЧИП-ДАННЫХ", "ТРОСТЬ"], c: 0 },
-        { q: "ДОЛЖНОСТЬ ЛУКИ ХЛОПОВА?", a: ["СЕТЕВОЙ АДМИН", "СМОТРИТЕЛЬ УЧИЛИЩ", "СУДЬЯ", "МЕДИК"], c: 1 },
-        { q: "ФИНАЛЬНЫЙ СТАТУС СЦЕНЫ?", a: ["ТИХАЯ", "НЕМАЯ", "ERROR", "OFFLINE"], c: 1 }
+        { q: "КТО ПЕРВЫЙ ЗАМЕТИЛ РЕВИЗОРА В ГОСТИНИЦЕ?", a: ["ОСИП", "ТРАКТИРЩИК", "БОБЧИНСКИЙ И ДОБЧИНСКИЙ", "ШПЕКИН"], c: 2 },
+        { q: "В ЧЕМ ОБВИНЯЛА ГОРОДНИЧЕГО ПОШЛЕПКИНА?", a: ["В КРАЖЕ", "В НЕЗАКОННОЙ ПЕРЕДАЧЕ МУЖА В СОЛДАТЫ", "В КОРРУПЦИИ", "В ПОРКЕ"], c: 1 },
+        { q: "ЦЕНА АРБУЗА В РУБЛЯХ ИЗ ВРАНЬЯ ХЛЕСТАКОВА?", a: ["100 РУБЛЕЙ", "500 РУБЛЕЙ", "700 РУБЛЕЙ", "1000 РУБЛЕЙ"], c: 2 },
+        { q: "ИМЯ ДОЧЕРИ ГОРОДНИЧЕГО?", a: ["АННА АНДРЕЕВНА", "МАРЬЯ АНТОНОВНА", "ДАРЬЯ ПЕТРОВНА", "АВДОТЬЯ"], c: 1 },
+        { q: "ЧТО ХЛЕСТАКОВ УРОНИЛ ПЕРЕД ЧИНОВНИКАМИ?", a: ["ПЛАТОК", "КАРТУЗ", "ЧИП", "ТРОСТЬ"], c: 0 },
+        { q: "ДОЛЖНОСТЬ ЛУКИ ЛУКИЧА ХЛОПОВА?", a: ["ПОЧТМЕЙСТЕР", "СМОТРИТЕЛЬ УЧИЛИЩ", "СУДЬЯ", "ЛЕКАРЬ"], c: 1 },
+        { q: "КАК НАЗЫВАЕТСЯ ФИНАЛЬНАЯ СЦЕНА ПЬЕСЫ?", a: ["ТИХАЯ СЦЕНА", "НЕМАЯ СЦЕНА", "ERROR_EXIT", "OFFLINE"], c: 1 }
     ];
 
     let current = 0;
@@ -196,7 +223,13 @@
             const btn = document.createElement('button');
             btn.className = 'opt-btn';
             btn.textContent = `[${idx}] ${opt}`;
-            btn.onclick = () => { userChoices.push(idx); if(idx===item.c) score++; current++; if(current<10) loadQuestion(); else showFinal(); };
+            btn.onclick = () => { 
+                userChoices.push(idx); 
+                if(idx === item.c) score++; 
+                current++; 
+                if(current < 10) loadQuestion(); 
+                else showFinal(); 
+            };
             container.appendChild(btn);
         });
     }
@@ -205,22 +238,25 @@
         document.getElementById('game').classList.add('hidden');
         document.getElementById('results').classList.remove('hidden');
         let grade = 2; let desc = "";
-        if (score >= 9) { grade = 5; desc = "ACCESS GRANTED. ТЫ ЛУЧШИЙ, АЛИ."; }
-        else if (score >= 7) { grade = 4; desc = "CONNECTION STABLE. ХОРОШИЙ РЕЗУЛЬТАТ."; }
-        else if (score >= 5) { grade = 3; desc = "SYSTEM WARNING. НУЖНО БОЛЬШЕ ДАННЫХ."; }
-        else { grade = 2; desc = "CRITICAL ERROR. ТЫ ПРОИГРАЛ ХЛЕСТАКОВУ."; }
+        if (score >= 9) { grade = 5; desc = "LEGENDARY STATUS. ТЫ ЛУЧШИЙ, АЛИ."; }
+        else if (score >= 7) { grade = 4; desc = "SYNC COMPLETE. ХОРОШИЙ РЕЗУЛЬТАТ."; }
+        else if (score >= 5) { grade = 3; desc = "AVERAGE LEVEL. СРЕДНЯЯ ОЦЕНКА."; }
+        else { grade = 2; desc = "SYSTEM FAILURE. ПЕРЕЧИТАЙ КЛАССИКУ."; }
+        
         document.getElementById('grade-num').textContent = grade;
         document.getElementById('grade-desc').textContent = desc;
+        
         const review = document.getElementById('detailed-review');
-        review.innerHTML = '<h3 style="color:var(--neon-pink)">LOG_DATA:</h3>';
         quizData.forEach((q, i) => {
             const ok = userChoices[i] === q.c;
             const div = document.createElement('div');
-            div.className = `review-card`;
-            div.innerHTML = `<span style="color:${ok ? 'var(--neon-cyan)' : 'var(--neon-pink)'}">${ok ? '✓' : '✗'}</span> ${q.q}`;
+            div.className = 'review-item';
+            div.style.borderLeft = ok ? '4px solid var(--neon-cyan)' : '4px solid var(--neon-pink)';
+            div.innerHTML = `[ST-${i+1}] ${ok ? 'PASSED' : 'FAILED'} - ${q.q}`;
             review.appendChild(div);
         });
     }
+
     loadQuestion();
 </script>
 

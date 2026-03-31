@@ -3,86 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Викторина по Ревизору</title>
+    <title>REVIZOR_CYBER_QUIZ</title>
     <style>
         :root {
-            --primary: #6366f1;
-            --bg: #f3f4f6;
-            --card: #ffffff;
-            --success: #10b981;
-            --error: #ef4444;
-            --text-main: #1f2937;
+            --neon-pink: #ff00ff;
+            --neon-cyan: #00f2ff;
+            --neon-yellow: #fcee0a;
+            --dark-bg: #050505;
+            --card-bg: rgba(20, 20, 25, 0.9);
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
+            background-color: var(--dark-bg);
+            background-image: 
+                linear-gradient(rgba(0, 242, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            color: white;
+            font-family: 'Orbitron', 'Segoe UI', sans-serif;
+            margin: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 30px 15px;
-            margin: 0;
+            justify-content: center;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .quiz-container {
-            background: var(--card);
-            max-width: 650px;
-            width: 100%;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            background: var(--card-bg);
+            width: 90%;
+            max-width: 600px;
             padding: 40px;
-            margin-bottom: 20px;
+            border: 2px solid var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.2), inset 0 0 10px rgba(0, 242, 255, 0.1);
+            border-radius: 0 40px 0 40px;
+            position: relative;
         }
 
-        .progress-container { margin-bottom: 30px; }
-        .progress-text { font-size: 0.9rem; color: #6b7280; margin-bottom: 8px; display: block; }
-        .progress-bar { height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
-        #progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.4s; }
+        .quiz-container::after {
+            content: "SYSTEM_ACCESS_GRANTED";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--neon-cyan);
+            color: black;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
 
-        h2 { font-size: 1.4rem; line-height: 1.4; margin-bottom: 25px; min-height: 60px; }
+        .progress-bar {
+            height: 4px;
+            background: #1a1a1a;
+            margin-bottom: 30px;
+            border-radius: 2px;
+        }
 
-        .options { display: flex; flex-direction: column; gap: 12px; }
+        #progress-fill {
+            height: 100%;
+            background: var(--neon-pink);
+            box-shadow: 0 0 15px var(--neon-pink);
+            width: 0%;
+            transition: 0.5s;
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            color: var(--neon-yellow);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--neon-pink);
+            padding-left: 15px;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
         .opt-btn {
-            padding: 18px;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            background: white;
-            cursor: pointer;
+            background: transparent;
+            border: 1px solid var(--neon-cyan);
+            color: var(--neon-cyan);
+            padding: 15px;
             text-align: left;
-            font-size: 1rem;
-            transition: all 0.2s;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: 0.3s;
+            clip-path: polygon(0% 0%, 95% 0%, 100% 30%, 100% 100%, 5% 100%, 0% 70%);
         }
-        .opt-btn:hover { background: #f9fafb; border-color: var(--primary); transform: translateY(-2px); }
+
+        .opt-btn:hover {
+            background: var(--neon-cyan);
+            color: black;
+            box-shadow: 0 0 20px var(--neon-cyan);
+        }
+
+        .grade-num {
+            font-size: 6rem;
+            color: var(--neon-pink);
+            text-shadow: 0 0 20px var(--neon-pink);
+            margin: 20px 0;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .footer b {
+            color: var(--neon-yellow);
+            text-shadow: 0 0 5px var(--neon-yellow);
+        }
 
         .hidden { display: none; }
 
-        .grade-badge { font-size: 4rem; font-weight: 800; color: var(--primary); margin: 20px 0; display: block; }
-        
         .review-card {
-            margin-top: 15px;
-            border: 1px solid #eee;
-            border-radius: 12px;
-            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 2px solid var(--neon-pink);
+            font-size: 0.8rem;
             text-align: left;
         }
-        .rev-correct { border-left: 6px solid var(--success); background: #f0fdf4; }
-        .rev-wrong { border-left: 6px solid var(--error); background: #fef2f2; }
-        
-        .footer {
-            text-align: center;
-            color: #6b7280;
-            font-size: 1rem;
-            margin-top: auto;
-            padding: 20px;
-        }
-        .footer b { color: var(--primary); font-size: 1.1rem; }
 
         .btn-restart {
-            background: var(--primary); color: white; border: none;
-            padding: 15px; border-radius: 10px; font-weight: 600;
-            cursor: pointer; width: 100%; margin-top: 25px;
+            margin-top: 20px;
+            background: var(--neon-yellow);
+            color: black;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
         }
     </style>
 </head>
@@ -90,39 +150,36 @@
 
 <div class="quiz-container">
     <div id="game">
-        <div class="progress-container">
-            <span class="progress-text" id="counter-text">Вопрос 1 из 10</span>
-            <div class="progress-bar"><div id="progress-fill"></div></div>
-        </div>
-        <h2 id="q-text">Загрузка...</h2>
+        <div class="progress-bar"><div id="progress-fill"></div></div>
+        <h2 id="q-text">INITIALIZING...</h2>
         <div class="options" id="opt-container"></div>
     </div>
 
     <div id="results" class="hidden" style="text-align: center;">
-        <h1 style="margin: 0;">Твоя оценка</h1>
-        <span class="grade-badge" id="grade-num">5</span>
-        <p id="grade-desc" style="font-size: 1.1rem; color: #4b5563; margin-bottom: 30px;"></p>
+        <h1 style="color:var(--neon-cyan)">LEVEL_COMPLETE</h1>
+        <div class="grade-num" id="grade-num">5</div>
+        <p id="grade-desc" style="color: var(--neon-yellow);"></p>
         <div id="detailed-review"></div>
-        <button class="btn-restart" onclick="location.reload()">Пройти еще раз</button>
+        <button class="btn-restart" onclick="location.reload()">REBOOT_SYSTEM</button>
     </div>
 </div>
 
 <div class="footer">
-    Эту работу сделал: <b>Али</b>
+    USER_ID: <b>АЛИ</b> // STATUS: DEVELOPER
 </div>
 
 <script>
     const quizData = [
-        { q: "Какую взятку Хлестаков взял у почтмейстера Шпекина?", a: ["200 рублей", "300 рублей", "400 рублей", "100 рублей"], c: 1 },
-        { q: "Как звали слугу Хлестакова, который был намного хитрее хозяина?", a: ["Петрушка", "Селифан", "Осип", "Захар"], c: 2 },
-        { q: "О ком Земляника доносит Хлестакову: 'совершенно ничего не делает... и вольнодумец'?", a: ["О Городничем", "О судье Ляпкине-Тяпкине", "О Хлопове", "О Бобчинском"], c: 1 },
-        { q: "Кто первый прибежал докладывать Городничему, что в городе ревизор?", a: ["Слуга Осип", "Трактирщик", "Бобчинский и Добчинский", "Почтмейстер"], c: 2 },
-        { q: "В чем обвиняла Городничего слесарша Пошлепкина?", a: ["В краже", "В том, что незаконно забрал мужа в солдаты", "В вымогательстве", "В порке"], c: 1 },
-        { q: "Сколько стоил арбуз, которым хвастался Хлестаков?", a: ["100 рублей", "500 рублей", "700 рублей", "1000 рублей"], c: 2 },
-        { q: "Как звали дочь Городничего?", a: ["Анна Андреевна", "Марья Антоновна", "Дарья Петровна", "Авдотья"], c: 1 },
-        { q: "Что уронил Хлестаков на пол, когда чиновники давали ему деньги?", a: ["Платок", "Картуз", "Письмо Тряпичкину", "Трость"], c: 0 },
-        { q: "Лука Лукич Хлопов был...", a: ["Почтмейстером", "Смотрителем училищ", "Судьей", "Врачом"], c: 1 },
-        { q: "Знаменитая сцена в самом конце пьесы называется...", a: ["Тихая сцена", "Немая сцена", "Финал", "Занавес"], c: 1 }
+        { q: "СУММА ВЗЯТКИ У ПОЧТМЕЙСТЕРА ШПЕКИНА?", a: ["200 CR", "300 CR", "400 CR", "100 CR"], c: 1 },
+        { q: "ID СЛУГИ ХЛЕСТАКОВА?", a: ["ПЕТРУШКА", "СЕЛИФАН", "ОСИП", "ЗАХАР"], c: 2 },
+        { q: "ДОНОС ЗЕМЛЯНИКИ: КТО ВОЛЬНОДУМЕЦ?", a: ["ГОРОДНИЧИЙ", "ЛЯПКИН-ТЯПКИН", "ХЛОПОВ", "БОБЧИНСКИЙ"], c: 1 },
+        { q: "ПЕРВЫЙ КОНТАКТ: КТО ЗАМЕТИЛ РЕВИЗОРА?", a: ["ОСИП", "ТРАКТИРЩИК", "БОБЧИНСКИЙ/ДОБЧИНСКИЙ", "ШПЕКИН"], c: 2 },
+        { q: "ОБВИНЕНИЕ ПОШЛЕПКИНОЙ:", a: ["КРАЖА ДАННЫХ", "НЕЗАКОННЫЙ ПРИЗЫВ МУЖА", "КОРРУПЦИЯ", "ПОРКА"], c: 1 },
+        { q: "ЦЕНА АРБУЗА В КРЕДИТАХ?", a: ["100", "500", "700", "1000"], c: 2 },
+        { q: "ИМЯ ОБЪЕКТА: ДОЧЬ ГОРОДНИЧЕГО?", a: ["АННА", "МАРЬЯ", "ДАРЬЯ", "АВДОТЬЯ"], c: 1 },
+        { q: "УПУЩЕННЫЙ ПРЕДМЕТ ХЛЕСТАКОВА?", a: ["ПЛАТОК", "КАРТУЗ", "ЧИП-ДАННЫХ", "ТРОСТЬ"], c: 0 },
+        { q: "ДОЛЖНОСТЬ ЛУКИ ХЛОПОВА?", a: ["СЕТЕВОЙ АДМИН", "СМОТРИТЕЛЬ УЧИЛИЩ", "СУДЬЯ", "МЕДИК"], c: 1 },
+        { q: "ФИНАЛЬНЫЙ СТАТУС СЦЕНЫ?", a: ["ТИХАЯ", "НЕМАЯ", "ERROR", "OFFLINE"], c: 1 }
     ];
 
     let current = 0;
@@ -131,15 +188,14 @@
 
     function loadQuestion() {
         const item = quizData[current];
-        document.getElementById('q-text').textContent = item.q;
-        document.getElementById('counter-text').textContent = `Вопрос ${current + 1} из 10`;
+        document.getElementById('q-text').textContent = `> ${item.q}`;
         document.getElementById('progress-fill').style.width = `${((current + 1) / 10) * 100}%`;
         const container = document.getElementById('opt-container');
         container.innerHTML = '';
         item.a.forEach((opt, idx) => {
             const btn = document.createElement('button');
             btn.className = 'opt-btn';
-            btn.textContent = opt;
+            btn.textContent = `[${idx}] ${opt}`;
             btn.onclick = () => { userChoices.push(idx); if(idx===item.c) score++; current++; if(current<10) loadQuestion(); else showFinal(); };
             container.appendChild(btn);
         });
@@ -149,19 +205,19 @@
         document.getElementById('game').classList.add('hidden');
         document.getElementById('results').classList.remove('hidden');
         let grade = 2; let desc = "";
-        if (score >= 9) { grade = 5; desc = "Отлично! Ты настоящий эксперт."; }
-        else if (score >= 7) { grade = 4; desc = "Хорошо, почти без ошибок."; }
-        else if (score >= 5) { grade = 3; desc = "Нормально, но можно лучше."; }
-        else { grade = 2; desc = "Плохо. Стоит перечитать книгу."; }
+        if (score >= 9) { grade = 5; desc = "ACCESS GRANTED. ТЫ ЛУЧШИЙ, АЛИ."; }
+        else if (score >= 7) { grade = 4; desc = "CONNECTION STABLE. ХОРОШИЙ РЕЗУЛЬТАТ."; }
+        else if (score >= 5) { grade = 3; desc = "SYSTEM WARNING. НУЖНО БОЛЬШЕ ДАННЫХ."; }
+        else { grade = 2; desc = "CRITICAL ERROR. ТЫ ПРОИГРАЛ ХЛЕСТАКОВУ."; }
         document.getElementById('grade-num').textContent = grade;
         document.getElementById('grade-desc').textContent = desc;
         const review = document.getElementById('detailed-review');
-        review.innerHTML = '<h3>Твои ответы:</h3>';
+        review.innerHTML = '<h3 style="color:var(--neon-pink)">LOG_DATA:</h3>';
         quizData.forEach((q, i) => {
             const ok = userChoices[i] === q.c;
             const div = document.createElement('div');
-            div.className = `review-card ${ok ? 'rev-correct' : 'rev-wrong'}`;
-            div.innerHTML = `<b>${i+1}. ${q.q}</b><br><small>${ok ? 'Верно' : 'Ошибка! Правильно: ' + q.a[q.c]}</small>`;
+            div.className = `review-card`;
+            div.innerHTML = `<span style="color:${ok ? 'var(--neon-cyan)' : 'var(--neon-pink)'}">${ok ? '✓' : '✗'}</span> ${q.q}`;
             review.appendChild(div);
         });
     }

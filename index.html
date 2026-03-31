@@ -3,208 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ревизор: Экспертный уровень</title>
+    <title>Викторина по Ревизору</title>
     <style>
         :root {
-            --primary: #4f46e5;
-            --success: #22c55e;
+            --primary: #6366f1;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --success: #10b981;
             --error: #ef4444;
-            --bg: #f8fafc;
-            --text: #1e293b;
+            --text-main: #1f2937;
         }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
+            color: var(--text-main);
             display: flex;
-            justify-content: center;
-            padding: 40px 20px;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 15px;
+            margin: 0;
+            min-height: 100vh;
         }
 
-        .container {
-            background: white;
-            max-width: 700px;
+        .quiz-container {
+            background: var(--card);
+            max-width: 650px;
             width: 100%;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 40px;
+            margin-bottom: 20px;
         }
 
-        .header { text-align: center; margin-bottom: 30px; }
-        .header h1 { margin: 0; color: var(--primary); font-size: 1.8rem; }
-        
-        .progress-bar {
-            height: 6px;
-            background: #e2e8f0;
-            border-radius: 3px;
-            margin-bottom: 25px;
-        }
-        #progress-fill {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            transition: 0.3s;
-            border-radius: 3px;
-        }
+        .progress-container { margin-bottom: 30px; }
+        .progress-text { font-size: 0.9rem; color: #6b7280; margin-bottom: 8px; display: block; }
+        .progress-bar { height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
+        #progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.4s; }
 
-        .question-box h2 { font-size: 1.3rem; margin-bottom: 20px; line-height: 1.5; }
+        h2 { font-size: 1.4rem; line-height: 1.4; margin-bottom: 25px; min-height: 60px; }
 
-        .options { display: grid; gap: 12px; }
+        .options { display: flex; flex-direction: column; gap: 12px; }
         .opt-btn {
-            padding: 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
+            padding: 18px;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
             background: white;
             cursor: pointer;
             text-align: left;
             font-size: 1rem;
-            transition: 0.2s;
+            transition: all 0.2s;
         }
-        .opt-btn:hover { border-color: var(--primary); background: #f5f3ff; }
+        .opt-btn:hover { background: #f9fafb; border-color: var(--primary); transform: translateY(-2px); }
 
         .hidden { display: none; }
 
-        /* Стили для итогов */
-        .review-item {
-            margin-bottom: 20px;
+        .grade-badge { font-size: 4rem; font-weight: 800; color: var(--primary); margin: 20px 0; display: block; }
+        
+        .review-card {
+            margin-top: 15px;
+            border: 1px solid #eee;
+            border-radius: 12px;
             padding: 15px;
-            border-radius: 8px;
-            border-left: 5px solid;
+            text-align: left;
         }
-        .correct-review { border-left-color: var(--success); background: #f0fdf4; }
-        .wrong-review { border-left-color: var(--error); background: #fef2f2; }
-        .review-q { font-weight: bold; margin-bottom: 5px; }
-        .review-info { font-size: 0.9rem; }
+        .rev-correct { border-left: 6px solid var(--success); background: #f0fdf4; }
+        .rev-wrong { border-left: 6px solid var(--error); background: #fef2f2; }
+        
+        .footer {
+            text-align: center;
+            color: #6b7280;
+            font-size: 1rem;
+            margin-top: auto;
+            padding: 20px;
+        }
+        .footer b { color: var(--primary); font-size: 1.1rem; }
 
-        .restart-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            margin-top: 20px;
+        .btn-restart {
+            background: var(--primary); color: white; border: none;
+            padding: 15px; border-radius: 10px; font-weight: 600;
+            cursor: pointer; width: 100%; margin-top: 25px;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div id="quiz-screen">
-        <div class="header">
-            <h1>Викторина «Ревизор»</h1>
+<div class="quiz-container">
+    <div id="game">
+        <div class="progress-container">
+            <span class="progress-text" id="counter-text">Вопрос 1 из 10</span>
+            <div class="progress-bar"><div id="progress-fill"></div></div>
         </div>
-        <div class="progress-bar"><div id="progress-fill"></div></div>
-        <div class="question-box">
-            <h2 id="q-text">Загрузка вопроса...</h2>
-            <div class="options" id="options-box"></div>
-        </div>
+        <h2 id="q-text">Загрузка...</h2>
+        <div class="options" id="opt-container"></div>
     </div>
 
-    <div id="result-screen" class="hidden">
-        <div class="header">
-            <h1>Ваш результат: <span id="final-score"></span></h1>
-            <p id="rank-msg"></p>
-        </div>
-        <div id="review-list"></div>
-        <button class="restart-btn" onclick="location.reload()">Попробовать снова</button>
+    <div id="results" class="hidden" style="text-align: center;">
+        <h1 style="margin: 0;">Твоя оценка</h1>
+        <span class="grade-badge" id="grade-num">5</span>
+        <p id="grade-desc" style="font-size: 1.1rem; color: #4b5563; margin-bottom: 30px;"></p>
+        <div id="detailed-review"></div>
+        <button class="btn-restart" onclick="location.reload()">Пройти еще раз</button>
     </div>
 </div>
 
+<div class="footer">
+    Эту работу сделал: <b>Али</b>
+</div>
+
 <script>
-    const questions = [
-        {
-            q: "Что, по словам Земляники, 'человек простой: если умрет, то и так умрет; если выздоровеет, то и так выздоровеет'?",
-            a: ["О пациентах больницы", "О чиновниках", "О своих детях", "О крепостных"],
-            c: 0
-        },
-        {
-            q: "Какое блюдо Хлестаков называет 'супом из Парижа'?",
-            a: ["Борщ", "Лабардан", "Суп в кастрюльке прямо с парохода", "Щи"],
-            c: 2
-        },
-        {
-            q: "Сколько книг, по легенде, прочитал судья Ляпкин-Тяпкин?",
-            a: ["Ни одной", "Пять или шесть", "Всю библиотеку", "Только кодекс"],
-            c: 1
-        },
-        {
-            q: "Какую фамилию носит полицейский, который 'для порядка ставит фонари под глазами'?",
-            a: ["Держиморда", "Свистунов", "Пуговицын", "Уховертов"],
-            c: 0
-        },
-        {
-            q: "Кто из персонажей пьесы берет взятки 'борзыми щенками'?",
-            a: ["Городничий", "Почтмейстер", "Судья", "Земляника"],
-            c: 2
-        }
+    const quizData = [
+        { q: "Какую взятку Хлестаков взял у почтмейстера Шпекина?", a: ["200 рублей", "300 рублей", "400 рублей", "100 рублей"], c: 1 },
+        { q: "Как звали слугу Хлестакова, который был намного хитрее хозяина?", a: ["Петрушка", "Селифан", "Осип", "Захар"], c: 2 },
+        { q: "О ком Земляника доносит Хлестакову: 'совершенно ничего не делает... и вольнодумец'?", a: ["О Городничем", "О судье Ляпкине-Тяпкине", "О Хлопове", "О Бобчинском"], c: 1 },
+        { q: "Кто первый прибежал докладывать Городничему, что в городе ревизор?", a: ["Слуга Осип", "Трактирщик", "Бобчинский и Добчинский", "Почтмейстер"], c: 2 },
+        { q: "В чем обвиняла Городничего слесарша Пошлепкина?", a: ["В краже", "В том, что незаконно забрал мужа в солдаты", "В вымогательстве", "В порке"], c: 1 },
+        { q: "Сколько стоил арбуз, которым хвастался Хлестаков?", a: ["100 рублей", "500 рублей", "700 рублей", "1000 рублей"], c: 2 },
+        { q: "Как звали дочь Городничего?", a: ["Анна Андреевна", "Марья Антоновна", "Дарья Петровна", "Авдотья"], c: 1 },
+        { q: "Что уронил Хлестаков на пол, когда чиновники давали ему деньги?", a: ["Платок", "Картуз", "Письмо Тряпичкину", "Трость"], c: 0 },
+        { q: "Лука Лукич Хлопов был...", a: ["Почтмейстером", "Смотрителем училищ", "Судьей", "Врачом"], c: 1 },
+        { q: "Знаменитая сцена в самом конце пьесы называется...", a: ["Тихая сцена", "Немая сцена", "Финал", "Занавес"], c: 1 }
     ];
 
-    let currentIdx = 0;
-    let userAnswers = [];
+    let current = 0;
+    let score = 0;
+    let userChoices = [];
 
-    function init() {
-        const q = questions[currentIdx];
-        document.getElementById('q-text').textContent = q.q;
-        const box = document.getElementById('options-box');
-        box.innerHTML = '';
-        
-        // Обновляем прогресс-бар
-        document.getElementById('progress-fill').style.width = `${(currentIdx / questions.length) * 100}%`;
-
-        q.a.forEach((opt, i) => {
+    function loadQuestion() {
+        const item = quizData[current];
+        document.getElementById('q-text').textContent = item.q;
+        document.getElementById('counter-text').textContent = `Вопрос ${current + 1} из 10`;
+        document.getElementById('progress-fill').style.width = `${((current + 1) / 10) * 100}%`;
+        const container = document.getElementById('opt-container');
+        container.innerHTML = '';
+        item.a.forEach((opt, idx) => {
             const btn = document.createElement('button');
             btn.className = 'opt-btn';
             btn.textContent = opt;
-            btn.onclick = () => selectAnswer(i);
-            box.appendChild(btn);
+            btn.onclick = () => { userChoices.push(idx); if(idx===item.c) score++; current++; if(current<10) loadQuestion(); else showFinal(); };
+            container.appendChild(btn);
         });
     }
 
-    function selectAnswer(idx) {
-        userAnswers.push(idx);
-        currentIdx++;
-        if (currentIdx < questions.length) {
-            init();
-        } else {
-            showResults();
-        }
-    }
-
-    function showResults() {
-        document.getElementById('quiz-screen').classList.add('hidden');
-        document.getElementById('result-screen').classList.remove('hidden');
-        
-        let score = 0;
-        const reviewList = document.getElementById('review-list');
-        reviewList.innerHTML = '<h3>Работа над ошибками:</h3>';
-
-        questions.forEach((q, i) => {
-            const isCorrect = userAnswers[i] === q.c;
-            if (isCorrect) score++;
-
+    function showFinal() {
+        document.getElementById('game').classList.add('hidden');
+        document.getElementById('results').classList.remove('hidden');
+        let grade = 2; let desc = "";
+        if (score >= 9) { grade = 5; desc = "Отлично! Ты настоящий эксперт."; }
+        else if (score >= 7) { grade = 4; desc = "Хорошо, почти без ошибок."; }
+        else if (score >= 5) { grade = 3; desc = "Нормально, но можно лучше."; }
+        else { grade = 2; desc = "Плохо. Стоит перечитать книгу."; }
+        document.getElementById('grade-num').textContent = grade;
+        document.getElementById('grade-desc').textContent = desc;
+        const review = document.getElementById('detailed-review');
+        review.innerHTML = '<h3>Твои ответы:</h3>';
+        quizData.forEach((q, i) => {
+            const ok = userChoices[i] === q.c;
             const div = document.createElement('div');
-            div.className = `review-item ${isCorrect ? 'correct-review' : 'wrong-review'}`;
-            div.innerHTML = `
-                <div class="review-q">${i + 1}. ${q.q}</div>
-                <div class="review-info">
-                    ${isCorrect ? '<b>Верно!</b>' : `<b>Ошибка.</b> Ваш ответ: ${q.a[userAnswers[i]]}. <br>Правильно: ${q.a[q.c]}`}
-                </div>
-            `;
-            reviewList.appendChild(div);
+            div.className = `review-card ${ok ? 'rev-correct' : 'rev-wrong'}`;
+            div.innerHTML = `<b>${i+1}. ${q.q}</b><br><small>${ok ? 'Верно' : 'Ошибка! Правильно: ' + q.a[q.c]}</small>`;
+            review.appendChild(div);
         });
-
-        document.getElementById('final-score').textContent = `${score} / ${questions.length}`;
-        document.getElementById('rank-msg').textContent = score === questions.length ? "Блестяще! Вы настоящий знаток Гоголя." : "Есть над чем поработать!";
     }
-
-    init();
+    loadQuestion();
 </script>
 
 </body>
